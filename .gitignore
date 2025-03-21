@@ -1,0 +1,21 @@
+# Dependências
+node_modules/
+
+# Ambiente
+.env
+dist/
+
+# Prisma
+.prisma/
+migrations/
+
+# IDE/Editor
+.vscode/
+.idea/
+
+# Logs e temporários
+*.log
+*.tmp
+
+# Outros
+.DS_Store
