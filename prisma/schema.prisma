@@ -12,6 +12,50 @@ model User {
   name      String
   email     String   @unique
   password  String
-  userType  String   // admin, company, affiliate
+  userType  String // 'admin', 'company', 'affiliate'
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  campaigns Campaign[] @relation("UserCampaigns") // Relacionamento reverso para Campaign
+  referrals Referral[] @relation("UserReferrals") // Relacionamento reverso para Referral
+  rewards   Reward[]   @relation("UserRewards") // Relacionamento reverso para Reward
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  rewardType  String // 'cash', 'points'
+  rewardValue Float
+  isActive    Boolean  @default(false)
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user      User       @relation("UserCampaigns", fields: [userId], references: [id]) // Relacionamento reverso
+  referrals Referral[] @relation("CampaignReferrals") // Relacionamento reverso para Referral
+}
+
+model Referral {
+  id         String   @id @default(uuid())
+  leadEmail  String
+  status     String // 'pending', 'converted', 'rejected'
+  campaignId String
+  referrerId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  campaign Campaign @relation("CampaignReferrals", fields: [campaignId], references: [id]) // Relacionamento reverso
+  referrer User     @relation("UserReferrals", fields: [referrerId], references: [id]) // Relacionamento reverso
+}
+
+model Reward {
+  id        String   @id @default(uuid())
+  amount    Float
+  status    String // 'approved', 'pending'
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation("UserRewards", fields: [userId], references: [id]) // Relacionamento reverso
 }
