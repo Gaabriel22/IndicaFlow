@@ -1,5 +1,5 @@
 import { PrismaService } from '../prisma/prisma.service'; 
-import { User as PrismaUser } from '@prisma/client'; 
+import { User as PrismaUser } from '@prisma/client';
 
 export interface User extends PrismaUser {
   id: string;
@@ -8,19 +8,16 @@ export interface User extends PrismaUser {
   createdAt: Date;
 }
 
-export const adminJSAuth = {
-  authenticate: async (
-    email: string,
-    password: string,
-  ): Promise<User | false> => {
-    const user = await PrismaService.user.findUnique({ where: { email } });
+export const adminJSAuth = (prismaService: PrismaService) => ({
+  authenticate: async (email: string, password: string): Promise<User | false> => {
+    const user = await prismaService.user.findUnique({ where: { email } });
 
     if (user && user.password === password) {
-      return Promise.resolve(user); 
+      return user;
     }
 
-    return Promise.resolve(false);
+    return false;
   },
   cookieName: 'adminjs',
   cookiePassword: 'some-secret-password-used-to-secure-cookie',
-};
+});

@@ -14,7 +14,7 @@ export class AdminJsController {
       resources: adminResources,
       branding: {
         companyName: 'IndicaFlow',
-        logo: 'https://example.com/logo.png', 
+        logo: '../../public/indicaFlow.png', 
       },
     };
 

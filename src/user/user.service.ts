@@ -21,6 +21,7 @@ export class UserService {
         password,
         name: 'Usuário Padrão',
         userType: 'cliente',
+        role: 'user',
       },
     });
   }
